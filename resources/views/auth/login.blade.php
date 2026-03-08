@@ -178,7 +178,7 @@
                                      <img src="{{ asset('public/logo/kumon-logo.png') }}" class="ml-n1 img-logo">
                                      <div class="w-100 text-center">
                                          <span class="text-white"
-                                             style="font-family: 'Signika'; font-size: 20px; font-weight: 300; line-height: 1;">ControlPoint</span>
+                                             style="font-family: 'Signika'; font-size: 20px; font-weight: 300; line-height: 1;">CSMS</span>
                                      </div>
                                  </div>
                              </div>
