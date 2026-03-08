@@ -1,0 +1,59 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Dependencies
+/vendor/
+/node_modules/
+
+# Laravel runtime files
+/bootstrap/cache/*.php
+/bootstrap/cache/*.json
+/storage/*.key
+/storage/logs/*
+/storage/app/temp/*
+/storage/framework/cache/data/*
+/storage/framework/cache/laravel-excel/*
+/storage/framework/sessions/*
+/storage/framework/testing/*
+/storage/framework/views/*
+/storage/pdfs/*
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+
+# Archives, dumps, and local backups
+*.zip
+*.7z
+*.rar
+*.tar
+*.gz
+*.sql
+*.sqlite
+*.bak
+*.tmp
+
+# Project-specific uploaded/generated assets
+/public/Archive.zip
+/public/public/Archive.zip
+/public/__MACOSX/
+/public/temp_uploads/
+/public/client_logos/
+/public/distributor_logos/
+/public/vendor_logos/
+/public/operating_system_logos/
+/public/network_attachment/
+/public/public/temp_uploads/
+/public/public/client_logos/
+
+# Keep Laravel placeholders if they exist
+!/storage/app/.gitignore
+!/storage/app/public/.gitignore
+!/storage/framework/.gitignore
+!/storage/framework/cache/.gitignore
+!/storage/logs/.gitignore

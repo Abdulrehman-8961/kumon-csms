@@ -1,0 +1,16 @@
+[10-Mar-2024 21:23:56 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home/c2ld0ecbw2xs/public_html/config/app.php:16
+Stack trace:
+#0 {main}
+  thrown in /home/c2ld0ecbw2xs/public_html/config/app.php on line 16
+[10-Mar-2024 21:23:56 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home/c2ld0ecbw2xs/public_html/config/app.php:16
+Stack trace:
+#0 {main}
+  thrown in /home/c2ld0ecbw2xs/public_html/config/app.php on line 16
+[10-Mar-2024 21:23:56 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home/c2ld0ecbw2xs/public_html/config/app.php:16
+Stack trace:
+#0 {main}
+  thrown in /home/c2ld0ecbw2xs/public_html/config/app.php on line 16
+[10-Mar-2024 21:23:57 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home/c2ld0ecbw2xs/public_html/config/app.php:16
+Stack trace:
+#0 {main}
+  thrown in /home/c2ld0ecbw2xs/public_html/config/app.php on line 16

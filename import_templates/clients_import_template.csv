@@ -1,0 +1,3 @@
+salutation,fname,lname,address,city,province,postalcode,tel,primary-email,paymethod
+Mr.,John,Doe,123 Main St,Montreal,Quebec,H1A1A1,5141234567,john.doe@example.com,Credit Card
+Mrs.,Jane,Smith,456 King St,Laval,Quebec,H7B2C3,4389876543,jane.smith@example.com,EFT
