@@ -2590,7 +2590,7 @@
                                             <div class="dropdown d-inline-block align-content-center">
                                                 <a type="button" class="banner-icon" id="page-header-user-dropdown"
                                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    @if (Auth::user()->user_image != '')
+                                                    @if (Auth::user()->user_image == '' && Auth::user()->user_image == null)
                                                         <!--                     <img class="img-avatar imgAvatar img-avatar48"
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       src="{{ asset('public') }}/dashboard_assets/media/avatars/avatar2.jpg"
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       alt=""> -->
@@ -2607,7 +2607,8 @@
                                                         aria-labelledby="page-header-user-dropdown">
                                                         <div class="p-2">
                                                             @auth
-                                                                <a class="dropdown-item" href="{{ url('change-password') }}">
+                                                                <a class="dropdown-item" href="javascript:;" data-toggle="modal"
+                                                                    data-target="#myProfileModal">
                                                                     <i class="far fa-fw fa-user mr-1"></i> My Profile
                                                                 </a>
                                                                 <!-- END Side Overlay -->

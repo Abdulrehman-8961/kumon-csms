@@ -39,6 +39,7 @@ Route::get('/error', 'HomeController@Error');
 Route::get('/checkVacations', 'ClientsController@sendVacationPlanningReminders');
 Route::get('/change-password', 'AdminController@showChangePasswordForm')->middleware('auth');
 Route::post('/change-password', 'AdminController@changePassword')->middleware('auth');
+Route::post('/update-user-profile', 'AdminController@updateUserProfile')->middleware('auth');
 Route::group(['middleware' => ['auth', 'statuscheck']], function () {
   
   

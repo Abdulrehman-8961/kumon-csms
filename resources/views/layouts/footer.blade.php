@@ -9,11 +9,11 @@
     <script src="{{ asset('public/dashboard_assets/js/dashmix.core.min.js') }}"></script>
 
     <!--
-                        Dashmix JS
+                            Dashmix JS
 
-                        Custom functionality including Blocks/Layout API as well as other vital and optional helpers
-                        webpack is putting everything together at assets/_js/main/app.js
-                    -->
+                            Custom functionality including Blocks/Layout API as well as other vital and optional helpers
+                            webpack is putting everything together at assets/_js/main/app.js
+                        -->
     <script src="{{ asset('public/dashboard_assets/js/dashmix.app.min.js') }}"></script>
 
     <!-- Page JS Plugins -->
@@ -70,9 +70,105 @@
     <script src="https://unpkg.com/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.js"></script>
     <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
     <script src="{{ asset('public/dashboard_assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
+    @auth
+        <div class="modal fade my-profile-modal" id="myProfileModal" tabindex="-1" role="dialog"
+            aria-labelledby="myProfileModalLabel" aria-hidden="true" data-bs-backdrop="static">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <form id="myProfileForm" enctype="multipart/form-data">
+                        @csrf
+                        <div class="modal-header align-items-center border-0 position-relative">
+                            <div class="d-flex flex-column">
+                                <h5 class="modal-title font-titillium text-primary fs-20 fw-800" id="myProfileModalLabel">
+                                    My Profile</h5>
+                                <small class="font-titillium">Update your name and profile photo</small>
+                            </div>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <i class="fa-solid fa-circle-xmark"></i>
+                            </button>
+                            <div class="form-validation-toast">
+                                <div class="d-flex align-items-center">
+                                    <i class="fa-light fa-triangle-exclamation text-orange fs-16 mr-2"></i>
+                                    <span class="font-titillium fs-14 text-darkgrey">Field validation failed.</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-body px-4 pb-0">
+                            <div class="row align-items-start my-profile-modal-layout">
+                                <div class="col-md-12">
+                                    <div class="border p-2 mb-3 mb-0 border-style edit-border bg-disabled">
+                                        <h6 class="font-titillium text-grey mb-2 fw-700 pl-1">Email Address / Login ID</h6>
+                                        <div class="d-flex pb-1 pl-1 pt-0">
+                                            <i class="fa-light fa-envelope text-grey fs-18"></i>
+                                            <input type="text"
+                                                class="form-control font-titillium text-grey fw-300 mb-0 ml-2 border-0 p-0 fs-18 rounded-0 edit-field"
+                                                id="profile_email_display" autocomplete="off"
+                                                value="{{ Auth::user()->email }}" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="border p-2 mb-3 border-style edit-border">
+                                        <h6 class="font-titillium text-grey mb-2 fw-700 pl-1">First Name</h6>
+                                        <div class="d-flex pb-1 pl-1 pt-0">
+                                            <i class="fa-light fa-envelope text-grey fs-18"></i>
+                                            <input type="text"
+                                                class="form-control font-titillium text-grey fw-300 mb-0 ml-2 border-0 p-0 fs-18 rounded-0 edit-field"
+                                                id="profile_firstname" name="firstname" autocomplete="off"
+                                                value="{{ Auth::user()->firstname }}">
+                                        </div>
+                                    </div>
+                                    <div class="border p-2 mb-3 border-style edit-border">
+                                        <h6 class="font-titillium text-grey mb-2 fw-700 pl-1">Last Name</h6>
+                                        <div class="d-flex pb-1 pl-1 pt-0">
+                                            <i class="fa-light fa-envelope text-grey fs-18"></i>
+                                            <input type="text"
+                                                class="form-control font-titillium text-grey fw-300 mb-0 ml-2 border-0 p-0 fs-18 rounded-0 edit-field"
+                                                id="profile_lastname" name="lastname" autocomplete="off"
+                                                value="{{ Auth::user()->lastname }}">
+                                        </div>
+                                    </div>
+                                        <div class="my-profile-photo-column mb-3">
+                                            <div class="profile-photo-absolute">
+                                                <div class="profile-photo-circle" id="profile_photo_circle">
+                                                    <input type="file" id="profile_photo" name="profile_photo" accept="image/*"
+                                                        hidden>
+    
+                                                    <img id="profile_photo_preview" class="profile-photo-preview" alt="Profile photo"
+                                                        src="{{ Auth::user()->user_image ? asset('public/client_logos/' . Auth::user()->user_image) : '' }}">
+    
+                                                    <div class="profile-photo-overlay" id="profile_photo_overlay">
+                                                        <div class="profile-photo-title">Profile Photo</div>
+                                                        <label for="profile_photo" class="profile-photo-browse">Browse</label>
+                                                    </div>
+    
+                                                    <div class="profile-photo-actions" id="profile_photo_actions">
+                                                        <button type="button" class="profile-photo-action" id="edit_profile_photo_btn"
+                                                            title="Change photo">
+                                                            <i class="fa-solid fa-pen-circle fs-20"></i>
+                                                        </button>
+                                                        <button type="button" class="profile-photo-action" id="remove_profile_photo_btn"
+                                                            title="Remove photo">
+                                                            <i class="fa-solid fa-circle-xmark fs-20"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer border-0 pt-0">
+                            <button type="submit" class="btn font-titillium fw-500 py-1 new-ok-btn" id="saveMyProfileBtn">OK</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endauth
+
     <script>
         jQuery(function() {
-            Dashmix.helpers('flatpickr', 'simplemde', 'datepicker', 'select2', 'ckeditor', 'notify', 'loader', 'popover');
+            Dashmix.helpers('flatpickr', 'simplemde', 'datepicker', 'select2', 'ckeditor', 'notify', 'loader',
+                'popover');
         });
     </script>
 
@@ -366,6 +462,145 @@
             }
         });
     </script>
+    @auth
+        <script>
+            (function() {
+                let selectedProfileFile = null;
+                let removeProfileImage = false;
+                const existingProfileImage =
+                    "{{ Auth::user()->user_image ? asset('public/client_logos/' . Auth::user()->user_image) : '' }}";
+                const fallbackProfileImage = "{{ asset('public/dashboard_assets/media/avatars/avatar2.jpg') }}";
+
+                function updateProfilePhotoUI(imageSrc) {
+                    const $circle = $('#profile_photo_circle');
+                    const $preview = $('#profile_photo_preview');
+                    const $overlay = $('#profile_photo_overlay');
+
+                    if (imageSrc) {
+                        $preview.attr('src', imageSrc).show();
+                        $overlay.hide();
+                        $circle.addClass('image-set');
+                    } else {
+                        $preview.attr('src', '').hide();
+                        $overlay.show();
+                        $circle.removeClass('image-set');
+                    }
+                }
+
+                $('#myProfileModal').on('show.bs.modal', function() {
+                    $('#profile_firstname').val(@json(Auth::user()->firstname));
+                    $('#profile_lastname').val(@json(Auth::user()->lastname));
+                    $('#profile_photo').val('');
+                    selectedProfileFile = null;
+                    removeProfileImage = false;
+                    $('#myProfileModal .form-validation-toast').hide();
+                    updateProfilePhotoUI(existingProfileImage);
+                });
+
+                $(document).on('change', '#profile_photo', function() {
+                    const file = this.files && this.files[0];
+
+                    if (!file) {
+                        return;
+                    }
+
+                    if (!file.type || file.type.indexOf('image/') !== 0) {
+                        this.value = '';
+                        return;
+                    }
+
+                    selectedProfileFile = file;
+                    removeProfileImage = false;
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        updateProfilePhotoUI(e.target.result);
+                    };
+                    reader.readAsDataURL(file);
+                });
+
+                $(document).on('click', '#edit_profile_photo_btn', function(e) {
+                    e.preventDefault();
+                    $('#profile_photo').trigger('click');
+                });
+
+                $(document).on('click', '#remove_profile_photo_btn', function(e) {
+                    e.preventDefault();
+                    $('#profile_photo').val('');
+                    selectedProfileFile = null;
+                    removeProfileImage = true;
+                    updateProfilePhotoUI('');
+                });
+
+                $(document).on('submit', '#myProfileForm', function(e) {
+                    e.preventDefault();
+
+                    const firstname = $('#profile_firstname').val().trim();
+                    const lastname = $('#profile_lastname').val().trim();
+
+                    if (!firstname || !lastname) {
+                        $('#myProfileModal .form-validation-toast').fadeIn();
+                        setTimeout(function() {
+                            $('#myProfileModal .form-validation-toast').fadeOut();
+                        }, 3000);
+                        return;
+                    }
+
+                    const formData = new FormData();
+                    formData.append('_token', $('input[name="_token"]', this).val());
+                    formData.append('firstname', firstname);
+                    formData.append('lastname', lastname);
+
+                    if (selectedProfileFile) {
+                        formData.append('profile_image', selectedProfileFile);
+                    }
+
+                    if (removeProfileImage) {
+                        formData.append('remove_profile_image', '1');
+                    }
+
+                    $('#saveMyProfileBtn').prop('disabled', true);
+
+                    $.ajax({
+                        url: "{{ url('update-user-profile') }}",
+                        method: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            if (response && response.image_url) {
+                                $('.imgAvatar').attr('src', response.image_url);
+                                $('#user_iamge').val(response.image_url === fallbackProfileImage ? '' :
+                                    response.image_url
+                                    .split('/').pop());
+                            }
+                            $('#myProfileModal').modal('hide');
+                            window.location.reload();
+                        },
+                        error: function(xhr) {
+                            const message = xhr.responseJSON && xhr.responseJSON.message ?
+                                xhr.responseJSON.message :
+                                'Unable to update profile.';
+                            alert(message);
+                        },
+                        complete: function() {
+                            $('#saveMyProfileBtn').prop('disabled', false);
+                        }
+                    });
+                });
+
+                updateProfilePhotoUI(existingProfileImage);
+
+                $("#myProfileModal").on('hidden.bs.modal', function() {
+                    $('#myProfileModal .form-validation-toast').hide();
+                    selectedProfileFile = null;
+                    removeProfileImage = false;
+                    $('#profile_photo').val('');
+                    updateProfilePhotoUI(existingProfileImage);
+                });
+            })
+            ();
+        </script>
+    @endauth
     </body>
 
     </html>

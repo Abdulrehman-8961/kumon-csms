@@ -1820,6 +1820,246 @@
 
         }
 
+        .my-profile-modal .modal-content {
+            border: 0;
+            /* border-radius: 18px; */
+            overflow: hidden;
+        }
+
+        /* .my-profile-modal .modal-header {
+            padding: 22px 24px 8px;
+            border-bottom: 0;
+            align-items: flex-start;
+        }
+
+        .my-profile-modal .modal-title {
+            color: #1e73be;
+            font-family: Titillium Web, sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.1;
+        }
+
+        .my-profile-modal .modal-subtitle {
+            color: #525252;
+            font-family: Source Sans Pro, sans-serif;
+            font-size: 14px;
+            margin-top: 6px;
+        }
+
+        .my-profile-modal .close {
+            opacity: 1;
+            color: #4d4d4d;
+            text-shadow: none;
+        } */
+
+        .my-profile-modal .form-validation-toast {
+            position: absolute;
+            right: 56px;
+            bottom: 18px;
+            display: none;
+        }
+
+        .my-profile-locked-badge {
+            position: absolute;
+            left: calc(100% + 18px);
+            top: 50%;
+            transform: translateY(-50%);
+            border: 2px solid #ff5d5d;
+            color: #e53935;
+            font-family: Titillium Web, sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            padding: 14px 28px;
+            line-height: 1;
+            background: #fff;
+        }
+
+        .my-profile-photo-column {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .my-profile-modal-layout {
+            min-height: 300px;
+        }
+
+        .profile-photo-absolute {
+            position: relative;
+            top: auto;
+            right: auto;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        .my-profile-form-card {
+            border: 1px solid #d7d7d7;
+            border-radius: 12px;
+            background: #fff;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+        }
+
+        .my-profile-form-card.is-readonly {
+            background: #f3f3f3;
+        }
+
+        .my-profile-form-label {
+            color: #3f3f3f;
+            font-family: Titillium Web, sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .my-profile-form-control {
+            border: 0 !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            font-size: 17px !important;
+            min-height: auto !important;
+            background: transparent !important;
+        }
+
+        .my-profile-form-control[readonly] {
+            color: #8a8a8a !important;
+            cursor: not-allowed;
+        }
+
+        .profile-photo-circle {
+            width: 150px;
+            height: 150px;
+            border: 2px dashed #bfbfbf;
+            border-radius: 50%;
+            background: #fff;
+            position: relative;
+            overflow: visible;
+            transition: border-color 0.2s ease-in-out;
+        }
+
+        .profile-photo-circle:hover {
+            border-color: #3f3f3f;
+        }
+
+        .profile-photo-circle.image-set {
+            border: 2px solid #3f3f3f;
+        }
+
+        .profile-photo-circle.image-set:hover {
+            border-color: #3f3f3f;
+        }
+
+        .profile-photo-preview {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            display: none;
+            pointer-events: none;
+        }
+
+        .profile-photo-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: transparent;
+        }
+        /* .profile-photo-circle.image-set .profile-photo-overlay {
+            display: none;
+        } */
+
+        .profile-photo-title {
+            font-family: "Titillium Web", sans-serif;
+            font-weight: 300;
+            font-size: 12px;
+            line-height: 1.3;
+            color: #3f3f3f;
+            margin-bottom: 2px;
+        }
+
+        .profile-photo-browse {
+            font-family: "Titillium Web", sans-serif;
+            font-weight: 300;
+            font-size: 12px;
+            line-height: 1.3;
+            color: #3f3f3f;
+            cursor: pointer;
+            text-decoration: underline;
+            margin: 0;
+        }
+
+        .profile-photo-actions {
+            position: absolute;
+            top: 10px;
+            left: 0;
+            right: 0;
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 4px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.15s ease-in-out;
+        }
+
+        .profile-photo-circle.image-set:hover .profile-photo-actions {
+            display: flex;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .profile-photo-action {
+            border: 0;
+            background: transparent;
+            color: #3f3f3f;
+            font-family: "Titillium Web", sans-serif;
+            font-weight: 300;
+            font-size: 12px;
+            line-height: 1;
+            text-decoration: none;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            min-width: 18px;
+            min-height: 18px;
+            cursor: pointer;
+        }
+
+        .profile-photo-action i {
+            color: #3f3f3f;
+            transition: color 0.15s ease-in-out;
+        }
+
+        .profile-photo-action:hover,
+        .profile-photo-action:hover i {
+            color: #c41e3a;
+    background: transparent;
+        }
+
+        .my-profile-modal .modal-footer {
+            border-top: 0;
+            padding: 12px 24px 28px;
+            justify-content: flex-end;
+            position: relative;
+            z-index: 2;
+        }
+
+        .my-profile-modal #saveMyProfileBtn {
+            min-width: 110px;
+            opacity: 0.7;
+        }
+
 
 
         .floatThead-container {
@@ -3023,7 +3263,8 @@
 
                             @auth
 
-                                <a class="dropdown-item" href="{{ url('change-password') }}">
+                                <a class="dropdown-item" href="javascript:;" data-toggle="modal"
+                                    data-target="#myProfileModal">
 
                                     <i class="far fa-fw fa-user mr-1"></i> My Profile
 

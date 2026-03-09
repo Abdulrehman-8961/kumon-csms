@@ -108,6 +108,7 @@
     
     $orderby = 'desc';
     $field = 'id';
+    $vacationClientId = Auth::user()->role == 'parent' ? Auth::user()->client_id : Auth::user()->id;
     if (sizeof($_GET) > 0) {
         if (isset($_GET['orderBy'])) {
             $orderby = $_GET['orderBy'];
@@ -192,7 +193,7 @@
             $qry = $qry->orderBy($field, $orderby)->paginate($limit);
         } else {
             $qry = DB::table('student_vacations')
-                ->where('client_id', Auth::user()->id)
+                ->where('client_id', $vacationClientId)
                 ->when(!empty($statusFilter) && strtolower($statusFilter) !== 'all', function ($q) use ($statusFilter, $startExpr, $endExpr, $today) {
                     $status = strtolower($statusFilter);
                     if ($status === 'active') {
@@ -225,7 +226,7 @@
             $qry = $qry->orderBy($field, $orderby)->paginate($limit);
         } else {
             $qry = DB::table('student_vacations')
-                ->where('client_id', Auth::user()->id)
+                ->where('client_id', $vacationClientId)
                 ->orderBy('id', 'desc');
             $totalQuery = clone $qry;
             $totalRows = $totalQuery->select(DB::raw('COUNT(DISTINCT id) as aggregate'))->first()->aggregate;
@@ -1917,6 +1918,10 @@
             .dropdown-menu .inner {
                 max-height: 110px !important;
             }
+
+            .hide-section {
+                visibility: hidden;
+            }
         </style>
         <div class="con   no-print page-header py-1" id="">
             <!-- Full Table -->
@@ -2079,10 +2084,8 @@
                                             <div class="dropdown d-inline-block align-content-center">
                                                 <a type="button" class="banner-icon" id="page-header-user-dropdown"
                                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    @if (Auth::user()->user_image != '')
-                                                        <!--                     <img class="img-avatar imgAvatar img-avatar48"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      src="{{ asset('public') }}/dashboard_assets/media/avatars/avatar2.jpg"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      alt=""> -->
+                                                    {{-- {{dd(Auth::user()->user_image)}} --}}
+                                                    @if (Auth::user()->user_image == '' && Auth::user()->user_image == null)
                                                         <i class="fa-thin fa-circle-user text-white fs-30 regular-icon"></i>
                                                         <i class="fa-solid fa-circle-user text-white fs-30 solid-icon"
                                                             style="padding-left: 3.5px; padding-right: 4px;"></i>
@@ -2096,7 +2099,8 @@
                                                         aria-labelledby="page-header-user-dropdown">
                                                         <div class="p-2">
                                                             @auth
-                                                                <a class="dropdown-item" href="{{ url('change-password') }}">
+                                                                <a class="dropdown-item" href="javascript:;" data-toggle="modal"
+                                                                    data-target="#myProfileModal">
                                                                     <i class="far fa-fw fa-user mr-1"></i> My Profile
                                                                 </a>
                                                                 <!-- END Side Overlay -->
@@ -2205,35 +2209,37 @@
                                                         Vacations
                                                     </h4>
                                                 </div>
-                                                <p class="mb-0 header-desc text-ellipsis-desc">Pending Description</p>
+                                                <p class="mb-0 header-desc text-ellipsis-desc">Use the [+] icon above to add a new vacation</p>
                                             </div>
                                         </div>
 
                                         <div class="new-header-icon-div d-flex align-items-center flex-shrink-0 no-print">
                                             @if ($totalRows != 0)
                                                 <span class="icon-html"></span>
-                                                <a data-toggle="tooltip" data-trigger="hover" data-placement="top"
-                                                    title="" href="javascript:;" data-original-title="Mark as Planned"
-                                                    class="text-white btn-mark-planned banner-icon sub-nav-icons d-none"
-                                                    data-item-id="{{ @$GETID }}" data-id="{{ @$GETID }}">
-                                                    <i class="fa-light fa-sparkles fs-20 regular-icon"></i>
-                                                    <i class="fa-solid fa-sparkles fs-20 solid-icon"
-                                                        style="padding-right: 2px; padding-left: 2.5px;"></i>
-                                                </a>
+                                                @if (Auth::user()->role == "admin")
+                                                    <a data-toggle="tooltip" data-trigger="hover" data-placement="top"
+                                                        title="" href="javascript:;" data-original-title="Mark as Planned"
+                                                        class="text-white btn-mark-planned banner-icon sub-nav-icons d-none"
+                                                        data-item-id="{{ @$GETID }}" data-id="{{ @$GETID }}">
+                                                        <i class="fa-light fa-sparkles fs-20 regular-icon"></i>
+                                                        <i class="fa-solid fa-sparkles fs-20 solid-icon"
+                                                            style="padding-right: 2px; padding-left: 2.5px;"></i>
+                                                    </a>                                                    
+                                                @endif
                                                 <a data-toggle="tooltip" data-trigger="hover" data-placement="top" title=""
                                                     href="javascript:;" data-original-title="Clone"
                                                     class="text-white btn-clone banner-icon sub-nav-icons"
                                                     data-item-id="{{ @$GETID }}" data-id="{{ @$GETID }}">
                                                     <i class="fa-light fa-clone fs-20 regular-icon"></i>
                                                     <i class="fa-solid fa-clone fs-20 solid-icon"
-                                                        style="padding-right: 2px; padding-left: 2.5px;"></i>
+                                                        style="padding-right: 2.5px;padding-left: 2.5px;"></i>
                                                 </a>
                                                 <a href="javascript:;" type="button" data-toggle="tooltip" data-trigger="hover"
                                                     data-placement="top" data-html="true" title="" data-original-title="Share"
                                                     class="btn text-white btn-share banner-icon sub-nav-icons">
                                                     <i class="fa-light fa-circle-share-nodes regular-icon" style="font-size: 21px;"></i>
                                                     <i class="fa-solid fa-circle-share-nodes solid-icon"
-                                                        style="padding-right: 2px; padding-left: 2.5px;font-size: 21px;"></i>
+                                                        style="padding-right: 2.5px;padding-left: 2.5px;font-size: 21px;"></i>
                                                 </a>
                                                 <a href="javascript:;" onclick="window.print()" d=""
                                                     class="text-white print-icon banner-icon sub-nav-icons"
@@ -2242,7 +2248,7 @@
                                                     data-original-title="Print">
                                                     <i class="fa-light fa-print fs-20 regular-icon"></i>
                                                     <i class="fa-solid fa-print fs-20 solid-icon"
-                                                        style="padding-right: 2px; padding-left: 2.5px;"></i>
+                                                        style="padding-right: 2.5px;padding-left: 2.5px;"></i>
                                                 </a>
                                                 <a href="javascript:;" class="text-white edit-icon btn-edit banner-icon sub-nav-icons"
                                                     data-item-id="{{ @$GETID }}" data-id="{{ @$GETID }}"
@@ -2259,7 +2265,7 @@
                                                     data-original-title="Delete">
                                                     <i class="fa-regular fa-trash fs-20 regular-icon"></i>
                                                     <i class="fa-solid fa-trash fs-20 solid-icon"
-                                                        style="padding-right: 2.855px; padding-left: 4px;"></i>
+                                                        style="padding-right: 3.855px;padding-left: 3.755px;"></i>
                                                 </a>
 
                                             @endif
@@ -2596,7 +2602,8 @@
                                             style="max-width: 95%; border-color: #d9d9d996 !important; border-width: 2px!important;">
                                         </div>
                                         <div class="col-md-12 bg-nav-tab position-relative">
-                                            <nav class="align-items-center d-flex justify-content-between read-nav-tabs sub-nav-tabs">
+                                            
+                                            <nav class="align-items-center d-flex justify-content-between read-nav-tabs sub-nav-tabs {{ count($qry) == 0 ? 'hide-section' : '' }}">
                                                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                                     <button class="nav-link active" id="nav-main-tab-vacation"
                                                         data-toggle="tab" data-target="#nav-main-vacation" type="button"

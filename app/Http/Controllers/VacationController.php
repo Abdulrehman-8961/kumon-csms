@@ -369,7 +369,7 @@ class VacationController extends Controller
                 'header_img' => $headerImg,
                 // 'header_text' => $headerText,
                 'header_sub_text' => $row->subject_names,
-                'header_desc' => $row->subject_names,
+                'header_desc' => $row->subject_names .': '. $row->date_range,
                 // 'editUrl' => $editUrl,
                 'headerText' => $row->student_name,
                 'take_work_home' => (int) $row->take_work_home,
@@ -457,7 +457,7 @@ class VacationController extends Controller
         $takeWorkHome = $request->boolean('take_work_home') ? 1 : 0;
 
         $vacationId = DB::table('student_vacations')->insertGetId([
-            'client_id' => Auth::user()->role == 'parent' ? Auth::user()->id : $request->client_id,
+            'client_id' => Auth::user()->role == 'parent' ? Auth::user()->client_id : $request->client_id,
             'student_id' => $request->student_id,
             'student_name' => $request->student_name,
             'subjects' => json_encode($request->subjects),
@@ -521,7 +521,7 @@ class VacationController extends Controller
             'subjects' => 'required'
         ]);
         DB::table('student_vacations')->where('id', $request->vacation_id)->update([
-            'client_id' => Auth::user()->role == 'parent' ? Auth::user()->id : $request->client_id,
+            'client_id' => Auth::user()->role == 'parent' ? Auth::user()->client_id : $request->client_id,
             'student_id' => $request->student_id,
             'student_name' => $request->student_name,
             'subjects' => json_encode($request->subjects),

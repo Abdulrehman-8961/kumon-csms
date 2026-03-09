@@ -199,13 +199,15 @@
                 <div class="content-side">
                     <ul class="nav-main">
 
-                        <li class="nav-main-item">
-                            <a class="nav-main-link   {{ Request::is('/') ? 'active' : '' }}" href="{{ url('/') }}">
-                                <img class="nav-main-link-icon " src="{{ asset('public/img/icon-dashboard-silver.png') }}"
-                                    width="20px" data-src="{{ asset('public/img/icon-dashboard-white.png') }}">
-                                <span class="nav-main-link-name">Dashboard</span>
-                            </a>
-                        </li>
+                        @if (Auth::user()->role == 'admin')
+                            <li class="nav-main-item">
+                                <a class="nav-main-link   {{ Request::is('/') ? 'active' : '' }}" href="{{ url('/') }}">
+                                    <img class="nav-main-link-icon " src="{{ asset('public/img/icon-dashboard-silver.png') }}"
+                                        width="20px" data-src="{{ asset('public/img/icon-dashboard-white.png') }}">
+                                    <span class="nav-main-link-name">Dashboard</span>
+                                </a>
+                            </li>                            
+                        @endif
 
 
                         @auth

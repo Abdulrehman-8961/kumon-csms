@@ -605,7 +605,8 @@
 
                                     <div class="p-2">
                                         @auth
-                                        <a class="dropdown-item" href="{{url('change-password')}}">
+                                        <a class="dropdown-item" href="javascript:;" data-toggle="modal"
+                                            data-target="#myProfileModal">
                                             <i class="far fa-fw fa-user mr-1"></i> My Profile
                                         </a>
 
