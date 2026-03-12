@@ -3002,6 +3002,12 @@
                                     style="overflow-y: auto;height: 85vh;">
                                     <div style="padding-top: 15px;">
                                         @foreach ($qry as $q)
+                                            @php
+                                                $bubbleFirstName = trim((string) ($q->firstname ?? '')) !== '' ? trim((string) $q->firstname) : trim((string) ($q->father_firstname ?? ''));
+                                                $bubbleLastName = trim((string) ($q->lastname ?? '')) !== '' ? trim((string) $q->lastname) : trim((string) ($q->father_lastname ?? ''));
+                                                $bubbleDisplayName = trim($bubbleFirstName . ' ' . $bubbleLastName);
+                                                $bubbleEmail = trim((string) ($q->email_address ?? '')) !== '' ? $q->email_address : ($q->father_email_address ?? '');
+                                            @endphp
                                             <div class="block block-rounded   table-block-new mb-2 pb-0  -  viewContent"
                                                 data="{{ $q->id }}" style="cursor:pointer;">
                                                 <div class="block-content p-2 d-flex">
@@ -3012,7 +3018,7 @@
                                                     <div class="align-content-center" style="width:82%;">
                                                         <div class="d-flex align-items-center justify-content-between">
                                                             <p class="c1 font-12pt mb-0 text-truncate titillium-web-black mb-0">
-                                                                {{ $q->salutation . ' ' . $q->firstname . ' ' . $q->lastname }}
+                                                                {{ $bubbleDisplayName !== '' ? $bubbleDisplayName : 'Client' }}
                                                             </p>
                                                             <div>
                                                                 <div>
@@ -3047,7 +3053,7 @@
                                                         <div class="d-flex align-items-center justify-content-between w-100">
                                                             <p class="font-9pt mb-0 text-truncate c2 titillium-web-light"
                                                                 style="width: 75%; line-height: 1;">
-                                                                {{ @$q->email_address }}
+                                                                {{ $bubbleEmail }}
                                                             </p>
                                                             @php
                                                                 $statusIcon = function ($subject) {

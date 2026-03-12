@@ -46,6 +46,13 @@ class ClientsController extends Controller
         $id = $request->input('id');
         if (isset($id)) {
             $q = DB::table('clients')->where('id', $id)->first();
+            $motherDisplayName = trim(($q->firstname ?? '') . ' ' . ($q->lastname ?? ''));
+            $fatherDisplayName = trim(($q->father_firstname ?? '') . ' ' . ($q->father_lastname ?? ''));
+            $preferredFirstName = trim((string) ($q->firstname ?? '')) !== '' ? trim((string) $q->firstname) : trim((string) ($q->father_firstname ?? ''));
+            $preferredLastName = trim((string) ($q->lastname ?? '')) !== '' ? trim((string) $q->lastname) : trim((string) ($q->father_lastname ?? ''));
+            $preferredDisplayName = trim($preferredFirstName . ' ' . $preferredLastName);
+            $preferredHeaderText = trim(($preferredLastName !== '' ? $preferredLastName . ', ' : '') . $preferredFirstName);
+            $preferredEmail = trim((string) ($q->email_address ?? '')) !== '' ? $q->email_address : ($q->father_email_address ?? '');
             $message = DB::table('pinned_messages')
                 ->leftJoin('users', 'users.id', '=', 'pinned_messages.added_by')
                 ->where('linked_id', $id)
@@ -102,16 +109,32 @@ class ClientsController extends Controller
     <div class="row">
       <div class="col-sm-12">
         <h5 class="titillium-web-black mb-3 text-darkgrey">
-          General Information
+          Mother Information
         </h5>
       </div>
       <div class="col-sm-12">
         <div class="border p-2 mb-3 border-style pl-3">
           <h6 class="font-titillium content-title mb-1 fw-700">Client Name</h6>
-          <div class="d-flex pt-1 mb-1">
+          <div class="d-flex align-items-center pt-1 mb-1">
             <i class="fa-light fa-user-tie text-grey fs-18"></i>
             <h6 class="font-titillium text-grey fw-300 mb-0 ml-2 client-name">
-              ' . $q->salutation . ' ' . $q->firstname . ' ' . $q->lastname . '
+              ' . e($motherDisplayName !== '' ? $motherDisplayName : '-') . '
+            </h6>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <div class="border p-2 mb-3 border-style pl-3">
+          <h6 class="font-titillium content-title mb-1 fw-700">
+            Payment Method
+          </h6>
+          <div class="d-flex align-items-center pt-1 mb-1">
+            <i class="fa-light fa-puzzle text-grey fs-18"></i>
+            <h6
+              class="font-titillium text-grey fw-300 mb-0 ml-2"
+              style="line-height: 1.5"
+            >
+              ' . e($q->payment_method ?? '-') . '
             </h6>
           </div>
         </div>
@@ -134,9 +157,9 @@ class ClientsController extends Controller
               class="font-titillium text-grey fw-300 mb-0 ml-2"
               style="line-height: 1.5"
             >
-              <b>' . $q->client_address . '</b><br />
-              ' . $q->city . ', ' . $q->state . '<br />
-              ' . $q->zip . '
+              <b>' . e($q->client_address ?? '-') . '</b><br />
+              ' . e(($q->city ?? '-') . ', ' . ($q->state ?? '-')) . '<br />
+              ' . e($q->zip ?? '-') . '
             </h6>
           </div>
         </div>
@@ -152,13 +175,13 @@ class ClientsController extends Controller
             <h6 class="font-titillium content-title mb-1 fw-700">
               Telephone No.
             </h6>
-            <div class="d-flex pt-1 mb-1">
-              <i class="fa-light fa-buildings text-grey fs-18"></i>
+            <div class="d-flex align-items-center pt-1 mb-1">
+              <i class="fa-light fa-circle-phone text-grey fs-18"></i>
               <h6
                 class="font-titillium text-grey fw-300 mb-0 ml-2"
                 style="line-height: 1.5"
               >
-                ' . $q->work_phone . '
+                ' . e($q->work_phone ?? '-') . '
               </h6>
             </div>
           </div>
@@ -166,15 +189,15 @@ class ClientsController extends Controller
         <div class="col-sm-6">
           <div class="border p-2 mb-3 border-style pl-3">
             <h6 class="font-titillium content-title mb-1 fw-700">
-              Payment Method
+              Access to Portal
             </h6>
-            <div class="d-flex pt-1 mb-1">
-              <i class="fa-light fa-buildings text-grey fs-18"></i>
+            <div class="d-flex align-items-center pt-1 mb-1">
+              <i class="fa-light fa-arrow-right-to-bracket text-grey fs-18"></i>
               <h6
                 class="font-titillium text-grey fw-300 mb-0 ml-2"
                 style="line-height: 1.5"
               >
-                ' . $q->payment_method . '
+                ' . ((int) ($q->portal_access ?? 0) === 1 ? 'Enabled' : 'Disabled') . '
               </h6>
             </div>
           </div>
@@ -182,19 +205,19 @@ class ClientsController extends Controller
         <div class="col-sm-12">
           <div class="border p-2 mb-3 border-style pl-3 position-relative field-action-wrapper">
             <button type="button" class="btn field-action-btn client-read-email-btn" title="Copy Email" aria-label="Copy Email"
-                data-email="' . $q->email_address . '">
+                data-email="' . e($preferredEmail) . '">
               <i class="fa-light fa-copy"></i>
             </button>
             <h6 class="font-titillium content-title mb-1 fw-700">
               Primary Email Address
             </h6>
-            <div class="d-flex pt-1 mb-1">
-              <i class="fa-light fa-buildings text-grey fs-18"></i>
+            <div class="d-flex align-items-center pt-1 mb-1">
+              <i class="fa-light fa-envelope text-grey fs-18"></i>
               <h6
                 class="font-titillium text-grey fw-300 mb-0 ml-2 primary-email"
                 style="line-height: 1.5"
               >
-                ' . $q->email_address . '
+                ' . e($preferredEmail !== '' ? $preferredEmail : '-') . '
               </h6>
             </div>
           </div>
@@ -209,46 +232,98 @@ class ClientsController extends Controller
     <div class="block-content py-0" style="padding-left: 30px;padding-right: 30px;">
         <div class="row">
             <div class="col-sm-12">
-                <h5 class="titillium-web-black mb-3 text-darkgrey">Email Notifications</h5>
+                <h5 class="titillium-web-black mb-3 text-darkgrey">Father Information</h5>
             </div>
             <div class="col-sm-12">
-                              <div class="border py-2 pl-2 pr-1 mb-3 border-style">
-                                  <div class="d-flex align-items-center justify-content-between my-2">
-                                      <h6 class="font-titillium text-grey mb-0 fw-700 pl-2">Email Addresses</h6>
-                                  </div>';
-            $emails = DB::table('client_emails')
-                ->where('client_id', $id)
-                ->pluck('email')
-                ->toArray();
-            if (count($emails) > 0) {
-                $html .= '<div class="table-responsive pr-2 small-box small-box-no-arrow">
-                                      <table class="table table-sm table-striped align-middle mb-0">
-                                          <tbody>';
-                foreach ($emails as $e) {
-                    $html .= '<tr class="affiliate-item banner-icon" data-email-id="${email}">
-                <td class="py-2 border-0 align-middle" width="20" style="border-radius: 13px 0 0 13px;">
-                    
-                </td>
-                <td class="py-2 border-0 ">
-                    <button type="button" class="btn mr-1 p-0">
-                        <i class="fa-thin fa-envelope text-grey fs-18 regular-icon"></i>
-                        <i class="fa-solid fa-envelope text-darkgrey fs-18 header-solid-icon"></i>
-                    </button>
-                    <span class="fw-300 text-darkgrey font-titillium fs-15 selected-aff-client">' . $e . '</span>
-                </td>
-                <td class="py-2 border-0 text-right align-middle" width="50" style="border-radius: 0 13px 13px 0;">
-                    
-                </td>
-            </tr>';
-                }
-                $html .= '</tbody>
-                                      </table>
-                                  </div>';
-            } else {
-                $html .= '<div class="font-titillium text-darkgrey fw-400 mb-0 text-center py-3">No email addresses found</div>';
-            }
-            $html .= '</div>
-                          </div>
+                <div class="border p-2 mb-3 border-style pl-3">
+                    <h6 class="font-titillium content-title mb-1 fw-700">Client Name</h6>
+            <div class="d-flex align-items-center pt-1 mb-1">
+                        <i class="fa-light fa-user-tie text-grey fs-18"></i>
+                        <h6 class="font-titillium text-grey fw-300 mb-0 ml-2 client-name">
+                            ' . e($fatherDisplayName !== '' ? $fatherDisplayName : '-') . '
+                        </h6>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 mb-3">
+                <div class="border border-style h-100 mb-3 p-2 pl-3 position-relative address-container">
+                    <div class="address-copy-toast" role="status" aria-live="polite">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <i class="fa-light fa-circle-check mr-2"></i>
+                                <span class="font-titillium fs-14 text-darkgrey">Copied to clipboard!</span>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="javascript:void();" class="copy-address-text position-absolute" data-toggle="tooltip" data-trigger="hover" data-placement="top" title="" data-original-title="Copy Address Info" style="right: 10px; top: 15px; display: none;"><i class="fa-copy fs-16 fa-thin" style="color: #263050;"></i></a>
+                    <h6 class="font-titillium content-title mb-1 fw-700">Address</h6>
+                    <div class="address-copy-content d-flex pt-1 mb-1">
+              <i class="fa-light fa-buildings text-grey fs-18"></i>
+                        <h6
+                          class="font-titillium text-grey fw-300 mb-0 ml-2"
+                          style="line-height: 1.5"
+                        >
+                          <b>' . e($q->father_client_address ?? '-') . '</b><br />
+                          ' . e(($q->father_city ?? '-') . ', ' . ($q->father_state ?? '-')) . '<br />
+                          ' . e($q->father_zip ?? '-') . '
+                        </h6>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="border p-2 mb-3 border-style pl-3 position-relative field-action-wrapper">
+                            <button type="button" class="btn field-action-btn client-read-phone-btn" title="Call" aria-label="Call"
+                                data-phone="' . e($q->father_work_phone ?? '') . '">
+                              <i class="fa-light fa-phone-arrow-up-right"></i>
+                            </button>
+                            <h6 class="font-titillium content-title mb-1 fw-700">Telephone No.</h6>
+                    <div class="d-flex align-items-center pt-1 mb-1">
+                                <i class="fa-light fa-circle-phone text-grey fs-18"></i>
+                                <h6
+                                  class="font-titillium text-grey fw-300 mb-0 ml-2"
+                                  style="line-height: 1.5"
+                                >
+                                  ' . e($q->father_work_phone ?? '-') . '
+                                </h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="border p-2 mb-3 border-style pl-3">
+                            <h6 class="font-titillium content-title mb-1 fw-700">Access to Portal</h6>
+                            <div class="d-flex align-items-center pt-1 mb-1">
+                                <i class="fa-light fa-arrow-right-to-bracket text-grey fs-18"></i>
+                                <h6
+                                  class="font-titillium text-grey fw-300 mb-0 ml-2"
+                                  style="line-height: 1.5"
+                                >
+                                  ' . ((int) ($q->father_portal_access ?? 0) === 1 ? 'Enabled' : 'Disabled') . '
+                                </h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="border p-2 mb-3 border-style pl-3 position-relative field-action-wrapper">
+                            <button type="button" class="btn field-action-btn client-read-email-btn" title="Copy Email" aria-label="Copy Email"
+                                data-email="' . e($q->father_email_address ?? '') . '">
+                              <i class="fa-light fa-copy"></i>
+                            </button>
+                            <h6 class="font-titillium content-title mb-1 fw-700">Primary Email Address</h6>
+                            <div class="d-flex align-items-center pt-1 mb-1">
+                                <i class="fa-light fa-envelope text-grey fs-18"></i>
+                                <h6
+                                  class="font-titillium text-grey fw-300 mb-0 ml-2"
+                                  style="line-height: 1.5"
+                                >
+                                  ' . e($q->father_email_address ?? '-') . '
+                                </h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div> 
 </div> ';
@@ -1563,7 +1638,7 @@ class ClientsController extends Controller
                 // 'header_sub_text' => $result,
                 'header_desc' => $result,
                 'editUrl' => $editUrl,
-                'headerText' => $q->lastname . ', ' . $q->firstname,
+                'headerText' => $preferredHeaderText !== '' ? $preferredHeaderText : 'Client',
                 'id' => $q->id,
                 'cloneUrl' => $cloneUrl,
                 'pdfUrl' => $pdfUrl,
@@ -1571,12 +1646,12 @@ class ClientsController extends Controller
                 'is_active' => $q->is_active ? 1 : 0,
                 'client' => [
                     'salutation' => $q->salutation,
-                    'firstname' => $q->firstname,
-                    'lastname' => $q->lastname,
-                    'address' => $q->client_address,
-                    'city' => $q->city,
-                    'province' => $q->state,
-                    'postal_code' => $q->zip,
+                    'firstname' => $preferredFirstName,
+                    'lastname' => $preferredLastName,
+                    'address' => trim((string) ($q->client_address ?? '')) !== '' ? $q->client_address : ($q->father_client_address ?? ''),
+                    'city' => trim((string) ($q->city ?? '')) !== '' ? $q->city : ($q->father_city ?? ''),
+                    'province' => trim((string) ($q->state ?? '')) !== '' ? $q->state : ($q->father_state ?? ''),
+                    'postal_code' => trim((string) ($q->zip ?? '')) !== '' ? $q->zip : ($q->father_zip ?? ''),
                 ],
                 'latest_payment' => DB::table('client_payments')
                     ->where('client_id', $q->id)
@@ -1786,6 +1861,7 @@ class ClientsController extends Controller
         $attachment_array = json_decode($request->attachmentArray ?? '[]', true);
         $email_ids = $request->email_ids ?? [];
         $portalAccess = $request->has('portal_access') ? 1 : 0;
+        $fatherPortalAccess = $request->has('father_portal_access') ? 1 : 0;
 
         // Map form fields to DB columns
         $data = [
@@ -1809,6 +1885,15 @@ class ClientsController extends Controller
             'ssl_notification' => $request->cert_notification ?? 0,
             'renewal_notification' => $request->client_notification ?? 0,
             'portal_access' => $portalAccess,
+            'father_firstname' => $request->father_first_name,
+            'father_lastname' => $request->father_last_name,
+            'father_client_address' => $request->father_client_address,
+            'father_city' => $request->father_city,
+            'father_state' => $request->father_province,
+            'father_zip' => $request->father_postal_code,
+            'father_work_phone' => $request->father_telephone_no,
+            'father_email_address' => $request->father_primary_email_address,
+            'father_portal_access' => $fatherPortalAccess,
             'created_by' => Auth::id(),
         ];
 
@@ -1816,6 +1901,7 @@ class ClientsController extends Controller
         $last_id = DB::table('clients')->insertGetId($data);
 
         $inviteSent = false;
+        $fatherInviteSent = false;
         $priceChangeEmailsSent = false;
         $priceChangeEmailsSent = false;
         $priceChangeEmailsSent = false;
@@ -1874,6 +1960,16 @@ class ClientsController extends Controller
                 $inviteSent = true;
             }
             
+        }
+
+        if ($fatherPortalAccess === 1 && !empty($request->father_primary_email_address)) {
+            $fatherInviteSent = $this->createParentPortalUser(
+                $last_id,
+                $request->father_first_name,
+                $request->father_last_name,
+                $request->father_primary_email_address,
+                'father_portal_invited_at'
+            );
         }
 
 
@@ -1971,15 +2067,28 @@ class ClientsController extends Controller
             'description' => 'Client added',
             'client_id' => $last_id,
         ]);
-        if($inviteSent) {
+        if ($inviteSent) {
             DB::table('client_audit_trail')->insert([
                 'user_id' => Auth::id(),
                 'description' => 'Email/invite was sent',
                 'client_id' => $last_id,
             ]);
         }
+        if ($fatherInviteSent) {
+            DB::table('client_audit_trail')->insert([
+                'user_id' => Auth::id(),
+                'description' => 'Father email/invite was sent',
+                'client_id' => $last_id,
+            ]);
+        }
 
-        return response()->json('success');
+        return response()->json([
+            'status' => 'success',
+            'invite_sent' => $inviteSent,
+            'father_invite_sent' => $fatherInviteSent,
+            'email' => $request->primary_email_address,
+            'father_email' => $request->father_primary_email_address,
+        ]);
     }
     public function updateClient(Request $request)
     {
@@ -1987,14 +2096,17 @@ class ClientsController extends Controller
         if (!$last_id) return;
         DB::beginTransaction();
         $portalAccess = $request->has('portal_access') ? 1 : 0;
+        $fatherPortalAccess = $request->has('father_portal_access') ? 1 : 0;
 
 
         // get old client state
         $oldClient = DB::table('clients')->where('id', $last_id)->first();
         $wasPortalEnabled = (int) ($oldClient->portal_access ?? 0);
+        $wasFatherPortalEnabled = (int) ($oldClient->father_portal_access ?? 0);
         $oldPaymentMethod = $oldClient->payment_method ?? null;
 
         $inviteSent = false;
+        $fatherInviteSent = false;
 
         $oldStudents = DB::table('client_students')
             ->where('client_id', $last_id)
@@ -2048,6 +2160,15 @@ class ClientsController extends Controller
             'ssl_notification' => $request->cert_notification ?? 0,
             'renewal_notification' => $request->client_notification ?? 0,
             'portal_access' => $portalAccess,
+            'father_firstname' => $request->father_first_name,
+            'father_lastname' => $request->father_last_name,
+            'father_client_address' => $request->father_client_address,
+            'father_city' => $request->father_city,
+            'father_state' => $request->father_province,
+            'father_zip' => $request->father_postal_code,
+            'father_work_phone' => $request->father_telephone_no,
+            'father_email_address' => $request->father_primary_email_address,
+            'father_portal_access' => $fatherPortalAccess,
             'updated_at' => now(),
             'updated_by' => Auth::id()
         ];
@@ -2180,6 +2301,31 @@ class ClientsController extends Controller
             }
 
             $inviteSent = true;
+        }
+
+        if ($wasFatherPortalEnabled === 0 && $fatherPortalAccess === 1 && !empty($request->father_primary_email_address)) {
+            $existingFatherUser = DB::table('users')
+                ->where('email', $request->father_primary_email_address)
+                ->where('is_deleted', 0)
+                ->first();
+
+            if ($existingFatherUser && (int) $existingFatherUser->client_id !== (int) $last_id) {
+                DB::rollBack();
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'The father email already has an account.'
+                ], 422);
+            }
+
+            if (!$existingFatherUser) {
+                $fatherInviteSent = $this->createParentPortalUser(
+                    $last_id,
+                    $request->father_first_name,
+                    $request->father_last_name,
+                    $request->father_primary_email_address,
+                    'father_portal_invited_at'
+                );
+            }
         }
 
 
@@ -2423,7 +2569,65 @@ class ClientsController extends Controller
             'status' => 'success',
             'price_change_emails_sent' => $priceChangeEmailsSent,
             'admin_email' => $adminEmail,
+            'invite_sent' => $inviteSent,
+            'father_invite_sent' => $fatherInviteSent,
         ]);
+    }
+
+    private function createParentPortalUser($clientId, $firstName, $lastName, $email, $inviteColumn = 'portal_invited_at')
+    {
+        if (empty($email)) {
+            return false;
+        }
+
+        $existingUser = DB::table('users')
+            ->where('email', $email)
+            ->where('is_deleted', 0)
+            ->first();
+
+        if ($existingUser) {
+            return false;
+        }
+
+        $tempPassword = Str::random(16);
+
+        DB::table('users')->insert([
+            'client_id' => $clientId,
+            'role' => 'parent',
+            'firstname' => $firstName,
+            'lastname' => $lastName,
+            'name' => trim($firstName . ' ' . $lastName),
+            'email' => $email,
+            'password' => Hash::make($tempPassword),
+            'portal_access' => 1,
+            'must_change' => 1,
+            'created_by' => Auth::id(),
+            'updated_by' => Auth::id(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        DB::table('clients')->where('id', $clientId)->update([
+            $inviteColumn => now()
+        ]);
+
+        try {
+            $data = [
+                'email' => $email,
+                'password' => $tempPassword,
+                'name' => trim($firstName . ' ' . $lastName),
+                'subject' => 'Password Reset Notification'
+            ];
+
+            Mail::send('emails.password', ['data' => $data], function ($message) use ($data) {
+                $message->from('noreply@kumon-csms.com', 'Kumon-noreply')
+                    ->to($data['email'])
+                    ->subject('Create Your Password');
+            });
+        } catch (\Throwable $e) {
+        }
+
+        return true;
     }
 
     private function sendPriceChangeEmail($alert_id, $last_id, $client_name, $adminEmail, $studentName, $oldAmount, $newAmount, $changedBy, $changedAtText, $centerName)
@@ -3454,23 +3658,29 @@ class ClientsController extends Controller
 
             if ($type === 'clients') {
                 fputcsv($handle, [
-                    'Salutation',
-                    'Fname',
-                    'Lname',
-                    'Address',
-                    'City',
-                    'Province',
-                    'PostalCode',
-                    'Tel',
-                    'Prim-Email',
-                    'Paymethod'
+                    'Mother-fname',
+                    'Mother-lname',
+                    'Mother-address',
+                    'Mother-city',
+                    'Mother-province',
+                    'Mother-postalcode',
+                    'Mother-tel',
+                    'Mother-primary-email',
+                    'Paymethod',
+                    'Father-fname',
+                    'Father-lname',
+                    'Father-address',
+                    'Father-city',
+                    'Father-province',
+                    'Father-postalcode',
+                    'Father-tel',
+                    'Father-primary-email'
                 ]);
 
                 $clients = DB::table('clients')
                     ->where('is_deleted', 0)
                     ->orderBy('id')
                     ->get([
-                        'salutation',
                         'firstname',
                         'lastname',
                         'client_address',
@@ -3479,12 +3689,19 @@ class ClientsController extends Controller
                         'zip',
                         'work_phone',
                         'email_address',
-                        'payment_method'
+                        'payment_method',
+                        'father_firstname',
+                        'father_lastname',
+                        'father_client_address',
+                        'father_city',
+                        'father_state',
+                        'father_zip',
+                        'father_work_phone',
+                        'father_email_address'
                     ]);
 
                 foreach ($clients as $row) {
                     fputcsv($handle, [
-                        $row->salutation ?? '',
                         $row->firstname ?? '',
                         $row->lastname ?? '',
                         $row->client_address ?? '',
@@ -3493,7 +3710,15 @@ class ClientsController extends Controller
                         $row->zip ?? '',
                         $row->work_phone ?? '',
                         $row->email_address ?? '',
-                        $row->payment_method ?? ''
+                        $row->payment_method ?? '',
+                        $row->father_firstname ?? '',
+                        $row->father_lastname ?? '',
+                        $row->father_client_address ?? '',
+                        $row->father_city ?? '',
+                        $row->father_state ?? '',
+                        $row->father_zip ?? '',
+                        $row->father_work_phone ?? '',
+                        $row->father_email_address ?? ''
                     ]);
                 }
             }
@@ -3615,12 +3840,30 @@ class ClientsController extends Controller
                 $headers = array_map($normalizeHeader, $headerRow);
                 $requiredHeaders = $type === 'students'
                     ? ['studentid', 'studentname', 'startdate', 'subjects', 'amount']
-                    : ['fname', 'lname'];
+                    : [
+                        'motherfname',
+                        'motherlname',
+                        'motheraddress',
+                        'mothercity',
+                        'motherprovince',
+                        'motherpostalcode',
+                        'mothertel',
+                        'motherprimaryemail',
+                        'paymethod',
+                        'fatherfname',
+                        'fatherlname',
+                        'fatheraddress',
+                        'fathercity',
+                        'fatherprovince',
+                        'fatherpostalcode',
+                        'fathertel',
+                        'fatherprimaryemail',
+                    ];
                 $missingHeaders = array_diff($requiredHeaders, $headers);
                 if ($type === 'clients') {
-                    $hasPrimaryEmailHeader = in_array('primemail', $headers, true) || in_array('primaryemail', $headers, true);
+                    $hasPrimaryEmailHeader = in_array('motherprimaryemail', $headers, true);
                     if (!$hasPrimaryEmailHeader) {
-                        $missingHeaders[] = 'primemail/primaryemail';
+                        $missingHeaders[] = 'mother-primary-email';
                     }
                 } else {
                     $hasClientIdentifier = in_array('clientprimaryemail', $headers, true) || in_array('clientname', $headers, true);
@@ -3693,16 +3936,23 @@ class ClientsController extends Controller
                     }
 
                     if ($type === 'clients') {
-                        $salutation = trim($data['salutation'] ?? '');
-                        $firstName = trim($data['fname'] ?? '');
-                        $lastName = trim($data['lname'] ?? '');
-                        $address = trim($data['address'] ?? '');
-                        $city = trim($data['city'] ?? '');
-                        $province = trim($data['province'] ?? '');
-                        $postalCode = trim($data['postalcode'] ?? '');
-                        $telephone = $normalizePhone($data['tel'] ?? '');
-                        $primaryEmail = trim($data['primemail'] ?? ($data['primaryemail'] ?? ''));
+                        $firstName = trim($data['motherfname'] ?? '');
+                        $lastName = trim($data['motherlname'] ?? '');
+                        $address = trim($data['motheraddress'] ?? '');
+                        $city = trim($data['mothercity'] ?? '');
+                        $province = trim($data['motherprovince'] ?? '');
+                        $postalCode = trim($data['motherpostalcode'] ?? '');
+                        $telephone = $normalizePhone($data['mothertel'] ?? '');
+                        $primaryEmail = trim($data['motherprimaryemail'] ?? '');
                         $paymethod = trim($data['paymethod'] ?? '');
+                        $fatherFirstName = trim($data['fatherfname'] ?? '');
+                        $fatherLastName = trim($data['fatherlname'] ?? '');
+                        $fatherAddress = trim($data['fatheraddress'] ?? '');
+                        $fatherCity = trim($data['fathercity'] ?? '');
+                        $fatherProvince = trim($data['fatherprovince'] ?? '');
+                        $fatherPostalCode = trim($data['fatherpostalcode'] ?? '');
+                        $fatherTelephone = $normalizePhone($data['fathertel'] ?? '');
+                        $fatherPrimaryEmail = trim($data['fatherprimaryemail'] ?? '');
 
                         if ($firstName === '' || $lastName === '' || $primaryEmail === '') {
                             throw new \Exception('Missing required client fields.');
@@ -3714,7 +3964,6 @@ class ClientsController extends Controller
                         $existingClientEmails[] = $primaryEmailKey;
 
                         DB::table('clients')->insert([
-                            'salutation' => $salutation,
                             'firstname' => $firstName,
                             'lastname' => $lastName,
                             'client_address' => $address,
@@ -3724,6 +3973,14 @@ class ClientsController extends Controller
                             'work_phone' => $telephone,
                             'email_address' => $primaryEmail,
                             'payment_method' => $paymethod !== '' ? $paymethod : 'Credit Card',
+                            'father_firstname' => $fatherFirstName,
+                            'father_lastname' => $fatherLastName,
+                            'father_client_address' => $fatherAddress,
+                            'father_city' => $fatherCity,
+                            'father_state' => $fatherProvince,
+                            'father_zip' => $fatherPostalCode,
+                            'father_work_phone' => $fatherTelephone,
+                            'father_email_address' => $fatherPrimaryEmail,
                             'created_by' => Auth::id(),
                             'updated_by' => Auth::id(),
                             'created_at' => now(),

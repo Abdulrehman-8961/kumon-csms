@@ -23,9 +23,9 @@
                   <div class="block-content py-0" style="padding-left: 30px;padding-right: 30px;">
                       <div class="row">
                           <div class="col-sm-12">
-                              <h5 class="titillium-web-black mb-3 text-darkgreen">General Information</h5>
+                              <h5 class="titillium-web-black mb-3 text-darkgreen">Mother Information</h5>
                           </div>
-                          <div class="col-sm-2">
+                          {{-- <div class="col-sm-2">
                               <div class="custom-dropdown salutation-custom-dropdown border p-2 mb-3 border-style edit-border"
                                   data-selected-id="" data-selected-text="">
 
@@ -56,8 +56,8 @@
 
                               </div>
                               <input type="hidden" name="salutation" id="edit_salutation">
-                          </div>
-                          <div class="col-sm-4">
+                          </div> --}}
+                          <div class="col-sm-6">
                               <div class="border p-2 mb-3 border-style edit-border position-relative">
                                   <a href="javascript:void();" class="mandatory-icon position-absolute"
                                       style="right: 9px;" data-toggle="tooltip" data-trigger="hover"
@@ -225,6 +225,40 @@
                           </div>
                           {{-- line 4 start --}}
                           <div class="col-sm-6">
+                              <div class="border p-2 mb-3 border-style">
+                                  <div class="d-flex align-items-center justify-content-between mb-2">
+                                      <h6 class="font-titillium text-grey mb-0 fw-700 pl-1">Access to portal</h6>
+                                      <button type="button"
+                                          class="btn banner-icon affiliate-info ml-auto p-0 cursor-help"
+                                          data-toggle="tooltip" data-trigger="hover" data-placement="top"
+                                          title="" data-original-title="">
+                                          <i class="fa-light fa-circle-question text-grey fs-18 regular-icon"></i>
+                                          <i
+                                              class="fa-solid fa-circle-question text-primary fs-18 header-solid-icon"></i>
+                                      </button>
+                                      <div class="affiliate-tooltip font-titillium text-grey fw-300"
+                                          style="top: 4px; right: 56px;">
+                                          <strong class="titillium-web-black fs-18 text-primary"
+                                              style="line-height:1.6;">Kumon Portal Access</strong><br>
+                                          Enabling this will send an invite to the clients
+                                          primary email address to be able to manage
+                                          their students vacations
+                                      </div>
+                                  </div>
+                                  <div class="d-flex align-items-center justify-content-between pb-1 pl-1 pt-0">
+                                      <div class="custom-control custom-switch">
+                                          <input type="checkbox" class="custom-control-input" id="customSwitch3"
+                                              name="portal_access">
+                                          <label class="custom-control-label" for="customSwitch3">
+                                              <h6 class="font-titillium text-grey fw-300 mb-0 ml-2 switch-text3">
+                                                  Access to manage student vacations disabled
+                                              </h6>
+                                          </label>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-sm-6">
                               <div class="border p-2 mb-3 border-style edit-radio-border position-relative"
                                   style="padding-bottom: 5px !important;">
                                   <a href="javascript:void();" class="mandatory-icon position-absolute"
@@ -259,6 +293,139 @@
                                   </div>
                               </div>
                           </div>
+                      </div>
+                  </div>
+              </div>
+
+
+              <div class="block new-block position-relative mt-3">
+                  <div class="block-content py-0" style="padding-left: 30px;padding-right: 30px;">
+                      <div class="row">
+                          <div class="col-sm-12 d-flex justify-content-between mb-3">
+                              <h5 class="titillium-web-black text-darkgreen mb-0">Father Information</h5>
+                              <a href="javascript:void(0);" class="btn font-titillium fw-500 py-1 new-ok-btn"
+                                  id="copy_address_from_mother_add" style="width: auto;">Copy Address From
+                                  Mother</a>
+                          </div>
+                          <div class="col-sm-6">
+                              <div class="border p-2 mb-3 border-style edit-border">
+                                  <h6 class="font-titillium text-grey mb-2 fw-700 pl-1">First Name</h6>
+                                  <div class="d-flex pb-1 pl-1 pt-0">
+                                      <i class="fa-light fa-user text-grey fs-18 constant-icon"></i>
+                                      <input type="text"
+                                          class="form-control font-titillium text-grey fw-300 mb-0 ml-2 border-0 p-0 fs-18 rounded-0 edit-field"
+                                          placeholder="Enter first name" name="father_first_name"
+                                          id="father_first_name" value="">
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-sm-6">
+                              <div class="border p-2 mb-3 border-style edit-border">
+                                  <h6 class="font-titillium text-grey mb-2 fw-700 pl-1">Last Name</h6>
+                                  <div class="d-flex pb-1 pl-1 pt-0">
+                                      <i class="fa-light fa-file-signature text-grey fs-18 constant-icon"></i>
+                                      <input type="text"
+                                          class="form-control font-titillium text-grey fw-300 mb-0 ml-2 border-0 p-0 fs-18 rounded-0 edit-field"
+                                          placeholder="Enter last name" name="father_last_name"
+                                          id="father_last_name" value="">
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-sm-6">
+                              <div class="border p-2 mb-3 border-style edit-border">
+                                  <h6 class="font-titillium text-grey mb-2 fw-700 pl-1">Address</h6>
+                                  <div class="d-flex pb-1 pl-1 pt-0">
+                                      <i class="fa-light fa-address-card text-grey fs-18 constant-icon"></i>
+                                      <input type="text"
+                                          class="form-control font-titillium text-grey fw-300 mb-0 ml-2 border-0 p-0 fs-18 rounded-0 edit-field"
+                                          placeholder="Enter home address" name="father_client_address"
+                                          id="father_client_address" value="">
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-sm-3">
+                              <div class="border p-2 mb-3 border-style edit-border">
+                                  <h6 class="font-titillium text-grey mb-2 fw-700 pl-1">City</h6>
+                                  <div class="d-flex pb-1 pl-1 pt-0">
+                                      <i class="fa-light fa-city text-grey fs-18 constant-icon"></i>
+                                      <input type="text"
+                                          class="form-control font-titillium text-grey fw-300 mb-0 ml-2 border-0 p-0 fs-18 rounded-0 edit-field"
+                                          placeholder="Enter city" name="father_city" id="father_city"
+                                          value="">
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-sm-3">
+                              <div class="custom-dropdown province-custom-dropdown father-province-custom-dropdown border p-2 mb-3 border-style edit-border"
+                                  data-selected-id="" data-selected-text="">
+                                  <h6 class="font-titillium text-grey mb-2 fw-700 pl-1">Province</h6>
+                                  <div
+                                      class="dropdown-display d-flex align-items-center justify-content-between pb-1 pl-1 pt-0">
+                                      <div class="d-flex align-items-center">
+                                          <i
+                                              class="fa-brands fa-canadian-maple-leaf text-grey fs-18 constant-icon"></i>
+                                          <span
+                                              class="selected-value font-titillium text-placeholder fw-300 mb-0 ml-2 edit-field">
+                                              Select Province
+                                          </span>
+                                      </div>
+                                      <i class="fa-light fa-circle-xmark clear-icon text-grey d-none fs-20"></i>
+                                  </div>
+                                  <ul class="dropdown-options">
+                                      <li class="search-option p-0 mb-2 mt-1">
+                                          <input type="text" class="dropdown-search text-darkgrey fw-600"
+                                              placeholder="" />
+                                      </li>
+                                      <li data-value="Alberta">Alberta</li>
+                                      <li data-value="British Columbia">British Columbia</li>
+                                      <li data-value="Manitoba">Manitoba</li>
+                                      <li data-value="New Brunswick">New Brunswick</li>
+                                      <li data-value="Newfoundland and Labrador">Newfoundland and Labrador</li>
+                                      <li data-value="Nova Scotia">Nova Scotia</li>
+                                      <li data-value="Ontario">Ontario</li>
+                                      <li data-value="Prince Edward Island">Prince Edward Island</li>
+                                      <li data-value="Quebec">Quebec</li>
+                                      <li data-value="Saskatchewan">Saskatchewan</li>
+                                  </ul>
+                              </div>
+                              <input type="hidden" name="father_province" id="father_province" value="">
+                          </div>
+                          <div class="col-sm-3">
+                              <div class="border p-2 mb-3 border-style edit-border">
+                                  <h6 class="font-titillium text-grey mb-2 fw-700 pl-1">Postal Code</h6>
+                                  <div class="d-flex pb-1 pl-1 pt-0">
+                                      <i class="fa-light fa-address-card text-grey fs-18 constant-icon"></i>
+                                      <input type="text"
+                                          class="form-control font-titillium text-grey fw-300 mb-0 ml-2 border-0 p-0 fs-18 rounded-0 edit-field"
+                                          name="father_postal_code" id="father_postal_code" maxlength="7"
+                                          autocomplete="off">
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-sm-3">
+                              <div class="border p-2 mb-3 border-style edit-border">
+                                  <h6 class="font-titillium text-grey mb-2 fw-700 pl-1">Telephone No.</h6>
+                                  <div class="d-flex pb-1 pl-1 pt-0">
+                                      <i class="fa-light fa-circle-phone text-grey fs-18 constant-icon"></i>
+                                      <input type="text"
+                                          class="form-control font-titillium text-grey fw-300 mb-0 ml-2 border-0 p-0 fs-18 rounded-0 edit-field"
+                                          name="father_telephone_no" id="father_telephone_no" maxlength="12"
+                                          autocomplete="off">
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-sm-6">
+                              <div class="border p-2 mb-3 border-style edit-border">
+                                  <h6 class="font-titillium text-grey mb-2 fw-700 pl-1">Primary Email Address</h6>
+                                  <div class="d-flex pb-1 pl-1 pt-0">
+                                      <i class="fa-light fa-envelope text-grey fs-18 constant-icon"></i>
+                                      <input type="email"
+                                          class="form-control font-titillium text-grey fw-300 mb-0 ml-2 border-0 p-0 fs-18 rounded-0 edit-field"
+                                          name="father_primary_email_address" id="father_primary_email_address"
+                                          placeholder="Enter primary email address">
+                                  </div>
+                              </div>
+                          </div>
                           <div class="col-sm-6">
                               <div class="border p-2 mb-3 border-style">
                                   <div class="d-flex align-items-center justify-content-between mb-2">
@@ -275,77 +442,20 @@
                                           style="top: 4px; right: 56px;">
                                           <strong class="titillium-web-black fs-18 text-primary"
                                               style="line-height:1.6;">Kumon Portal Access</strong><br>
-                                          Enabling this will send an invite to the clients
-                                          primary email address to be able to manage
-                                          their students vacations
+                                          Enabling this will send an invite to the father's primary email address to be
+                                          able to manage their students vacations
                                       </div>
                                   </div>
                                   <div class="d-flex align-items-center justify-content-between pb-1 pl-1 pt-0">
                                       <div class="custom-control custom-switch">
-                                          <input type="checkbox" class="custom-control-input" id="customSwitch3"
-                                              name="portal_access">
-                                          <label class="custom-control-label" for="customSwitch3">
-                                              <h6 class="font-titillium text-grey fw-300 mb-0 ml-2 switch-text3">
+                                          <input type="checkbox" class="custom-control-input" id="customSwitch4"
+                                              name="father_portal_access">
+                                          <label class="custom-control-label" for="customSwitch4">
+                                              <h6 class="font-titillium text-grey fw-300 mb-0 ml-2 switch-text4">
                                                   Access to manage student vacations disabled
                                               </h6>
                                           </label>
                                       </div>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-
-
-              <div class="block new-block position-relative mt-3">
-                  <div class="block-content py-0" style="padding-left: 30px;padding-right: 30px;">
-                      <div class="row">
-                          <div class="col-sm-12">
-                              <h5 class="titillium-web-black mb-3 text-darkgreen">Additional Emails</h5>
-                          </div>
-                          <div class="col-sm-6">
-                              <div class="border p-2 mb-3 border-style">
-                                  <div class="d-flex align-items-center justify-content-between mb-2">
-                                      <h6 class="font-titillium text-grey mb-0 fw-700 pl-1">Email notifications</h6>
-                                      <button type="button"
-                                          class="btn banner-icon affiliate-info ml-auto p-0 cursor-help"
-                                          data-toggle="tooltip" data-trigger="hover" data-placement="top"
-                                          title="" data-original-title="">
-                                          <i class="fa-light fa-circle-question text-grey fs-18 regular-icon"></i>
-                                          <i
-                                              class="fa-solid fa-circle-question text-primary fs-18 header-solid-icon"></i>
-                                      </button>
-                                      <div class="affiliate-tooltip font-titillium text-grey fw-300">
-                                          <strong class="titillium-web-black fs-18 text-primary"
-                                              style="line-height:1.6;">Email Notifications</strong><br>
-                                          Enabling this option will send email
-                                          notifications for upcoming renewals for this
-                                          contract. You can add additional emails to send
-                                          out notifications. The intervals at which these
-                                          renewals are sent at are configured in the
-                                          system Settings.
-                                      </div>
-
-                                  </div>
-                                  <div class="d-flex align-items-center justify-content-between pb-1 pl-1 pt-0">
-                                      <div class="custom-control custom-switch">
-                                          <input type="checkbox" class="custom-control-input" id="customSwitch2"
-                                              name="additional_emails">
-                                          <label class="custom-control-label" for="customSwitch2">
-                                              <h6 class="font-titillium text-grey fw-300 mb-0 ml-2 switch-text2">
-                                                  Email notifications disabled
-                                              </h6>
-                                          </label>
-                                      </div>
-                                      <button type="button" class="btn addEmail banner-icon ml-auto px-0"
-                                          data-contract="" data-toggle="tooltip" data-trigger="hover"
-                                          data-placement="top" title="" data-original-title="Add Email">
-                                          <i
-                                              class="fa-light fa-square-dashed-circle-plus text-grey regular-icon fs-18"></i>
-                                          <i
-                                              class="fa-solid fa-square-dashed-circle-plus text-primary header-solid-icon fs-18"></i>
-                                      </button>
                                   </div>
                               </div>
                           </div>
@@ -2761,8 +2871,11 @@
 
                   // Others
                   bindPostalCode('postal_code');
+                  bindPostalCode('father_postal_code');
                   bindEmail('primary_email_address');
+                  bindEmail('father_primary_email_address');
                   bindTelephone('telephone_no');
+                  bindTelephone('father_telephone_no');
               }
 
               /* ==============================
@@ -4853,6 +4966,7 @@
               $('.selectpicker').selectpicker();
 
               const $switch3 = $('#customSwitch3');
+              const $switch4 = $('#customSwitch4');
               const $switch2 = $('#customSwitch2');
               const $container = $('.emails-container');
               const $btn2 = $('.addEmail');
@@ -4892,13 +5006,49 @@
                   }
               }
 
+              function updateSwitch4State() {
+                  if ($switch4.is(':checked')) {
+                      $('.switch-text4').text('Access to manage student vacations enabled');
+                  } else {
+                      $('.switch-text4').text('Access to manage student vacations disabled');
+                  }
+              }
+
               // ✅ Initialize correct state based on PHP value
               updateSwitch2State();
               updateSwitch3State();
+              updateSwitch4State();
 
               // 🔄 Listen for toggle change
               $switch2.on('change', updateSwitch2State);
               $switch3.on('change', updateSwitch3State);
+              $switch4.on('change', updateSwitch4State);
+
+              function syncFatherProvinceDisplay(value) {
+                  const $dropdown = $('.father-province-custom-dropdown');
+                  const text = value || 'Select Province';
+                  $dropdown.attr('data-selected-id', value || '');
+                  $dropdown.attr('data-selected-text', value || '');
+                  $dropdown.find('.selected-value')
+                      .text(text)
+                      .toggleClass('text-placeholder', !value);
+                  $dropdown.find('.clear-icon').toggleClass('d-none', !value);
+                  $('#father_province').val(value || '');
+                  $dropdown.find('li').removeClass('selected');
+                  if (value) {
+                      $dropdown.find(`li[data-value="${value}"]`).addClass('selected');
+                  }
+              }
+
+              $(document).off('click.addPage', '#copy_address_from_mother_add').on('click.addPage',
+                  '#copy_address_from_mother_add',
+                  function(e) {
+                      e.preventDefault();
+                      $('#father_client_address').val($('#client_address').val());
+                      $('#father_city').val($('#city').val());
+                      $('#father_postal_code').val($('#postal_code').val());
+                      syncFatherProvinceDisplay($('#edit_province').val());
+                  });
 
               let editingRow = null;
 
@@ -8880,8 +9030,17 @@
                   let postal_code = $('#postal_code').val();
                   let telephone_no = $('#telephone_no').val();
                   let primary_email_address = $('#primary_email_address').val();
+                  let father_first_name = $('#father_first_name').val();
+                  let father_last_name = $('#father_last_name').val();
+                  let father_client_address = $('#father_client_address').val();
+                  let father_city = $('#father_city').val();
+                  let father_province = $('#father_province').val();
+                  let father_postal_code = $('#father_postal_code').val();
+                  let father_telephone_no = $('#father_telephone_no').val();
+                  let father_primary_email_address = $('#father_primary_email_address').val();
                   let payment_method = $('input[name="payment_method"]:checked').val();
                   let portal_access = $('input[name="portal_access"]:checked').val();
+                  let father_portal_access = $('input[name="father_portal_access"]:checked').val();
 
                   // collect emails to insert
                   let email_ids = [];
@@ -8899,6 +9058,12 @@
                   let validprimary_email_address = validateFieldByIdOrName('primary_email_address'); // by ID
 
 
+
+                  if (father_portal_access && !father_primary_email_address) {
+                      validateFieldByIdOrName('father_primary_email_address', 0);
+                      showFormValidation();
+                      return false;
+                  }
 
                   if (!validfirst_name || !validlast_name || !validclient_address || !validpostal_code ||
                       !validtelephone_no || !validedit_province || !validcity ||
@@ -8921,8 +9086,17 @@
                               postal_code,
                               telephone_no,
                               primary_email_address,
+                              father_first_name,
+                              father_last_name,
+                              father_client_address,
+                              father_city,
+                              father_province,
+                              father_postal_code,
+                              father_telephone_no,
+                              father_primary_email_address,
                               payment_method,
                               portal_access,
+                              father_portal_access,
                               email_ids,
                               students_array: JSON.stringify(students_array),
                               payments_array: JSON.stringify(payments_array),
