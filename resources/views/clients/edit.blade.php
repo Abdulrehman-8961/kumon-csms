@@ -85,7 +85,7 @@
               <div class="block new-block position-relative mt-3">
                   <div class="block-content py-0" style="padding-left: 30px;padding-right: 30px;">
                       <div class="row">
-                          <div class="col-sm-12 d-none">
+                          <div class="col-sm-12">
                               <h5 class="titillium-web-black mb-3 text-darkblue">Mother Information</h5>
                           </div>
                           {{-- <div class="col-sm-2">
